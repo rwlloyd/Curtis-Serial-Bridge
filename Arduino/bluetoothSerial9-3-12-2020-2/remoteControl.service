@@ -1,0 +1,14 @@
+[Unit]
+Description=Service for Bluetooth remote control
+After=wpa_supplicant.service
+
+[Service]
+ExecStart=/usr/bin/python3 -u bluetoothSerial9.py
+WorkingDirectory=/home/pi/scripts
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
