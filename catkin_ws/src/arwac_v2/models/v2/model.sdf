@@ -1,0 +1,420 @@
+<?xml version='1.0'>
+<sdf version='1.6'>
+    <model name="v2">
+        <pose>0 0 0.6 0 0 0</pose>
+        
+        <link name="base_link">
+            <pose>0 0 0.02 0 0 0</pose>
+
+            <inertial>
+                <inertia>
+                    <ixx>1</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>1</iyy>
+                    <iyz>0</iyz>
+                    <izz>1</izz>
+                </inertia>
+                <mass>50.0</mass>
+            </inertial>
+
+            <collision name="base_link_collision">
+                <geometry>
+                    <box>
+                        <size>0.997 0.997 0.04</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <visual name="base_link_visual">
+                <pose>-0.004 0 -0.022 0 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v2/meshes/arwac_v2skew.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+
+        <link name="front_wheel_block">
+            <pose>0.3825 0 0 0 0 0</pose>
+
+            <inertial>
+                <inertia>
+                    <ixx>1</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>1</iyy>
+                    <iyz>0</iyz>
+                    <izz>1</izz>
+                </inertia>
+                <mass>20.0</mass>
+            </inertial>
+
+            <collision name="front_wheel_block_collision_top">
+                <pose>0 0 -0.093025 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.2320 0.8428 0.18605</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <collision name="front_wheel_block_collision_left">
+                <pose>0 -0.34611 -0.2778 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.2320 0.15058 0.1835</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <collision name="front_wheel_block_collision_right">
+                <pose>0 0.34611 -0.2778 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.2320 0.15058 0.1835</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <!-- <visual name="front_wheel_block_visual">
+                <geometry>
+                    <box>
+                        <size>0.2320 0.8428 0.3671</size>
+                    </box>
+                </geometry>
+            </visual> -->
+        </link>
+
+        <joint name="front_wheel_block_joint" type="fixed">
+            <pose>0 0 0 0 0 0</pose>
+            <parent>base_link</parent>
+            <child>front_wheel_block</child>
+        </joint>
+
+        <link name="wheel_front_left">
+            <pose>0.36764 0.575 -0.31205 1.57079 0 0</pose>
+
+            <inertial>
+                <mass>2.6357</mass>
+                <pose>0 0 0 0 0 0</pose>
+                <inertia>
+                <ixx>0.0246688</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.0246688</iyy>
+                <iyz>0</iyz>
+                <izz>0.0441058</izz>
+                </inertia>
+            </inertial>
+
+            <collision name="wheel_front_left_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.203015</radius>
+                        <length>0.08752</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>            
+            
+            <visual name="wheel_front_left_visual">
+                <pose>0 0 0 1.57079 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v2/meshes/wheel.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="wheel_front_left_joint" type="revolute">
+            <pose>0 0 0.04376 -1.57079 0 0</pose>
+            <parent>front_wheel_block</parent>
+            <child>wheel_front_left</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>false</use_parent_model_frame>
+            </axis>
+            <physics>
+                <ode>
+                <limit>
+                    <cfm>0.000000</cfm>
+                    <erp>0.900000</erp>
+                </limit>
+                </ode>
+            </physics>
+        </joint>
+        
+        <link name="wheel_front_right">
+            <pose>0.36764 -0.575 -0.31205 1.57079 0 0</pose>
+
+            <inertial>
+                <mass>2.6357</mass>
+                <pose>0 0 0 0 0 0</pose>
+                <inertia>
+                <ixx>0.0246688</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.0246688</iyy>
+                <iyz>0</iyz>
+                <izz>0.0441058</izz>
+                </inertia>
+            </inertial>
+
+            <collision name="wheel_front_right_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.203015</radius>
+                        <length>0.08752</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>            
+            
+            <visual name="wheel_front_right_visual">
+                <pose>0 0 0 1.57079 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v2/meshes/wheel.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="wheel_front_right_joint" type="revolute">
+            <pose>0 0 0.04376 -1.57079 0 0</pose>
+            <parent>front_wheel_block</parent>
+            <child>wheel_front_right</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>false</use_parent_model_frame>
+            </axis>
+            <physics>
+                <ode>
+                <limit>
+                    <cfm>0.000000</cfm>
+                    <erp>0.900000</erp>
+                </limit>
+                </ode>
+            </physics>
+        </joint>
+
+        <link name="back_wheel_block">
+            <pose>-0.36764 0 0 0 0 0</pose>
+
+            <inertial>
+                <inertia>
+                    <ixx>1</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>1</iyy>
+                    <iyz>0</iyz>
+                    <izz>1</izz>
+                </inertia>
+                <mass>20.0</mass>
+            </inertial>
+
+            <collision name="back_wheel_block_collision_top">
+                <pose>0 0 -0.093025 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.2320 0.8428 0.18605</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <collision name="back_wheel_block_collision_left">
+                <pose>0 -0.34611 -0.2778 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.2320 0.15058 0.1835</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <collision name="back_wheel_block_collision_right">
+                <pose>0 0.34611 -0.2778 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.2320 0.15058 0.1835</size>
+                    </box>
+                </geometry>
+            </collision>
+
+            <!-- <visual name="back_wheel_block_visual">
+                <geometry>
+                    <box>
+                        <size>0.2320 0.8428 0.3671</size>
+                    </box>
+                </geometry>
+            </visual> -->
+        </link>
+
+        <joint name="back_wheel_block_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>back_wheel_block</child>
+        </joint>
+
+        <link name="wheel_back_left">
+            <pose>-0.36764 0.575 -0.31205 1.57079 0 0</pose>
+
+            <inertial>
+                <mass>2.6357</mass>
+                <pose>0 0 0 0 0 0</pose>
+                <inertia>
+                <ixx>0.0246688</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.0246688</iyy>
+                <iyz>0</iyz>
+                <izz>0.0441058</izz>
+                </inertia>
+            </inertial>
+
+            <collision name="wheel_back_left_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.203015</radius>
+                        <length>0.08752</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>            
+            
+            <visual name="wheel_back_left_visual">
+                <pose>0 0 0 1.57079 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v2/meshes/wheel.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="wheel_back_left_joint" type="revolute">
+            <pose>0 0 0.04376 -1.57079 0 0</pose>
+            <parent>back_wheel_block</parent>
+            <child>wheel_back_left</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>false</use_parent_model_frame>
+            </axis>
+            <physics>
+                <ode>
+                <limit>
+                    <cfm>0.000000</cfm>
+                    <erp>0.900000</erp>
+                </limit>
+                </ode>
+            </physics>
+        </joint>
+        
+        <link name="wheel_back_right">
+            <pose>-0.36764 -0.575 -0.31205 1.57079 0 0</pose>
+
+            <inertial>
+                <mass>2.6357</mass>
+                <pose>0 0 0 0 0 0</pose>
+                <inertia>
+                <ixx>0.0246688</ixx>
+                <ixy>0</ixy>
+                <ixz>0</ixz>
+                <iyy>0.0246688</iyy>
+                <iyz>0</iyz>
+                <izz>0.0441058</izz>
+                </inertia>
+            </inertial>
+
+            <collision name="wheel_back_right_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.203015</radius>
+                        <length>0.08752</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>            
+            
+            <visual name="wheel_back_right_visual">
+                <pose>0 0 0 1.57079 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v2/meshes/wheel.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+        </link>
+        <joint name="wheel_back_right_joint" type="revolute">
+            <pose>0 0 0.04376 -1.57079 0 0</pose>
+            <parent>back_wheel_block</parent>
+            <child>wheel_back_right</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>false</use_parent_model_frame>
+            </axis>
+            <physics>
+                <ode>
+                <limit>
+                    <cfm>0.000000</cfm>
+                    <erp>0.900000</erp>
+                </limit>
+                </ode>
+            </physics>
+        </joint>
+
+        <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+            <updateRate>100.0</updateRate>
+            <robotNamespace>/</robotNamespace>
+            <leftFrontJoint>wheel_front_left_joint</leftFrontJoint>
+            <rightFrontJoint>wheel_front_right_joint</rightFrontJoint>
+            <leftRearJoint>wheel_back_left_joint</leftRearJoint>
+            <rightRearJoint>wheel_back_right_joint</rightRearJoint>
+            <wheelSeparation>1.15</wheelSeparation>
+            <wheelDiameter>0.40603</wheelDiameter>
+            <robotBaseFrame>base_link</robotBaseFrame>
+            <torque>20</torque>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryTopic>odom</odometryTopic>
+            <odometryFrame>map</odometryFrame>
+            <broadcastTF>false</broadcastTF>
+            <covariance_x>0.0001</covariance_x>
+            <covariance_y>0.0001</covariance_y>
+            <covariance_yaw>0.01</covariance_yaw>
+        </plugin>
+    </model>
+</sdf>
