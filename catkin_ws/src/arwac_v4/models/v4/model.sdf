@@ -1,0 +1,474 @@
+<?xml version='1.0'>
+<sdf version='1.6'>
+    <model name="v4">
+        <pose>0 0 1 0 0 0</pose>
+
+        <link name="base_link">
+            <inertial>
+                <inertia>
+                    <ixx>1</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>1</iyy>
+                    <iyz>0</iyz>
+                    <izz>1</izz>
+                </inertia>
+                <mass>100.0</mass>
+            </inertial>
+
+            <visual name="fancy_mesh">
+                <material>
+                    <ambient>0.6 0.6 0.1 1</ambient>
+                    <diffuse>0.8 0.8 0.1 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>0.198 0.725 -0.5 0 0 3.14159</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/arwac_v4_no_mounts.stl</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <!-- <visual name="base_link_visual_top">
+                <pose>-1.2205755 0 0.27 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>1.418849 1.25 0.1</size>
+                    </box>
+                </geometry>
+            </visual>
+            <visual name="base_link_visual_slope">
+                <pose>-0.338359 0 0.135 0 0.6632 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.438553 0.8 0.1</size>
+                    </box>
+                </geometry>
+            </visual>
+            <visual name="base_link_visual_front">
+                <pose>0 0 0 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.365567 0.8 0.105762</size>
+                    </box>
+                </geometry>
+            </visual> -->
+            <collision name="base_link_collision">
+                <pose>-0.88359975 0 0.135 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>2.13 1.25 0.37</size>
+                    </box>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="front_left_wheel_mount">
+            <pose>0 0.4635 -0.1426 0 0 0</pose>
+            <!-- <visual name="front_left_wheel_mount_visual">
+                <geometry>
+                    <box>
+                        <size>0.132 0.125 0.3852</size>
+                    </box>
+                </geometry>
+            </visual> -->
+
+            <collision name="front_left_wheel_mount_collision">
+                <geometry>
+                    <box>
+                        <size>0.132 0.125 0.3852</size>
+                    </box>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="front_left_wheel_mount_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>front_left_wheel_mount</child>
+        </joint>
+
+        <link name="front_right_wheel_mount">
+            <pose>0 -0.4635 -0.1426 0 0 0</pose>
+            <!-- <visual name="front_right_wheel_mount_visual">
+                <geometry>
+                    <box>
+                        <size>0.132 0.125 0.3852</size>
+                    </box>
+                </geometry>
+            </visual> -->
+
+            <collision name="front_right_wheel_mount_collision">
+                <geometry>
+                    <box>
+                        <size>0.132 0.125 0.3852</size>
+                    </box>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="front_right_wheel_mount_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>front_right_wheel_mount</child>
+        </joint>
+
+        <link name="front_left_wheel">
+            <pose>0 0.635016 -0.29225 1.5708 0 0</pose>
+            <visual name="front_left_wheel_visual">
+                <material>
+                    <ambient>0.1 0.1 0.1 1</ambient>
+                    <diffuse>0.1 0.1 0.2 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>0 0 0 1.5708 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/arwac_v4_wheel_scale.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <collision name="front_left_wheel_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.2224185</radius>
+                        <length>0.170020</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+        </link>
+
+        <joint name="front_left_wheel_joint" type="revolute">
+            <parent>front_left_wheel_mount</parent>
+            <child>front_left_wheel</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+            </axis>
+        </joint>
+
+        <link name="front_right_wheel">
+            <pose>0 -0.635016 -0.29225 1.5708 0 0</pose>
+            <visual name="front_right_wheel_visual">
+                <material>
+                    <ambient>0.1 0.1 0.1 1</ambient>
+                    <diffuse>0.1 0.1 0.2 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>0 0 0 -1.5708 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/arwac_v4_wheel_scale.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <collision name="front_right_wheel_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.2224185</radius>
+                        <length>0.170020</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+        </link>
+
+        <joint name="front_right_wheel_joint" type="revolute">
+            <parent>front_right_wheel_mount</parent>
+            <child>front_right_wheel</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+            </axis>
+        </joint>
+
+        <link name="back_fixed_bar">
+            <pose>-1.9 0 0.04525 0 0 0</pose>
+            <!-- <visual name="back_fixed_bar_visual">
+                <geometry>
+                    <box>
+                        <size>0.06 0.870047 0.06</size>
+                    </box>
+                </geometry>
+            </visual> -->
+        </link>
+
+        <joint name="back_fixed_bar_joint" type="fixed">
+            <parent>base_link</parent>
+            <child>back_fixed_bar</child>
+        </joint>
+
+        <link name="back_left_wheel_steering">
+            <pose>-1.9716095 0.425317 0.04525 0 0 0</pose>
+            <!-- <visual name="back_left_wheel_steering_visual">
+                <geometry>
+                    <box>
+                        <size>0.225481 0.079606 0.095</size>
+                    </box>
+                </geometry>
+            </visual> -->
+        </link>
+
+        <joint name="back_left_wheel_steering_joint" type="revolute">
+            <parent>back_fixed_bar</parent>
+            <child>back_left_wheel_steering</child>
+            <pose frame="back_left_wheel_steering">0.0731345 0 0 0 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+                <limit>
+                    <lower>-1.65</lower>
+                    <upper>1.65</upper>
+                </limit>
+            </axis>
+        </joint>
+
+        <link name="back_left_wheel_mount">
+            <pose>-1.9 0.546748 -0.130893 0 0 0</pose>
+            <visual name="back_left_wheel_mount_visual">
+                <material>
+                    <ambient>0.6 0.6 0.1 1</ambient>
+                    <diffuse>0.8 0.8 0.1 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>-0.052 -0.044 0 0 0 3.14159</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/back_left_wheel_mount_skew.stl</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <collision name="back_left_wheel_mount_collision">
+                <geometry>
+                    <box>
+                        <size>0.132000 0.160600 0.447286</size>
+                    </box>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="back_left_wheel_mount_joint" type="fixed">
+            <parent>back_left_wheel_steering</parent>
+            <child>back_left_wheel_mount</child>
+        </joint>
+
+        <link name="back_right_wheel_steering">
+            <pose>-1.9716095 -0.425317 0.04525 0 0 0</pose>
+            <!-- <visual name="back_right_wheel_steering_visual">
+                <geometry>
+                    <box>
+                        <size>0.225481 0.079606 0.095</size>
+                    </box>
+                </geometry>
+            </visual> -->
+        </link>
+
+        <joint name="back_right_wheel_steering_joint" type="revolute">
+            <parent>back_fixed_bar</parent>
+            <child>back_right_wheel_steering</child>
+            <pose frame="back_right_wheel_steering">0.0731345 0 0 0 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+                <limit>
+                    <lower>-1.65</lower>
+                    <upper>1.65</upper>
+                </limit>
+            </axis>
+        </joint>
+
+        <link name="back_right_wheel_mount">
+            <pose>-1.9 -0.546748 -0.130893 0 0 0</pose>
+            <visual name="back_right_wheel_mount_visual">
+                <material>
+                    <ambient>0.6 0.6 0.1 1</ambient>
+                    <diffuse>0.8 0.8 0.1 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>0 0 -0.1175 0 0 3.14159</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/back_right_wheel_mount_skew.stl</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <collision name="back_right_wheel_mount_collision">
+                <geometry>
+                    <box>
+                        <size>0.132000 0.160600 0.447286</size>
+                    </box>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="back_right_wheel_mount_joint" type="fixed">
+            <parent>back_right_wheel_steering</parent>
+            <child>back_right_wheel_mount</child>
+        </joint>
+
+
+        <!-- To actually steer, set the angle of back_right_wheel_steering_joint -->
+        <link name="tracking_rod">
+            <pose>-2.055892 0 0.04525 0 0 0</pose>
+            <visual name="tracking_rod_visual">
+                <pose>0 0 0.061765 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.015455 0.919312 0.015455</size>
+                    </box>
+                </geometry>
+            </visual>
+        </link>
+
+        <joint name="tracking_rod_left_joint" type="revolute">
+            <parent>back_left_wheel_steering</parent>
+            <child>tracking_rod</child>
+            <pose>0 0.4519285 0 0 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+                <limit>
+                    <lower>-1.65</lower>
+                    <upper>1.65</upper>
+                </limit>
+            </axis>
+        </joint>
+
+        <joint name="tracking_rod_right_joint" type="revolute">
+            <parent>back_right_wheel_steering</parent>
+            <child>tracking_rod</child>
+            <pose>0 -0.4519285 0 0 0 0</pose>
+            <axis>
+                <xyz>0 0 1</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+                <limit>
+                    <lower>-1.65</lower>
+                    <upper>1.65</upper>
+                </limit>
+            </axis>
+        </joint>
+
+        <link name="back_left_wheel">
+            <pose>-1.9 0.707348 -0.29225 1.5708 0 0</pose>
+            <visual name="back_left_wheel_visual">
+                <material>
+                    <ambient>0.1 0.1 0.1 1</ambient>
+                    <diffuse>0.1 0.1 0.2 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>0 0 0 1.5708 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/arwac_v4_wheel_scale.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <collision name="back_left_wheel_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.2224185</radius>
+                        <length>0.170020</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+        </link>
+
+        <joint name="back_left_wheel_joint" type="revolute">
+            <parent>back_left_wheel_mount</parent>
+            <child>back_left_wheel</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+            </axis>
+        </joint>
+
+        <link name="back_right_wheel">
+            <pose>-1.9 -0.707348 -0.29225 1.5708 0 0</pose>
+            <visual name="back_right_wheel_visual">
+                <material>
+                    <ambient>0.1 0.1 0.1 1</ambient>
+                    <diffuse>0.1 0.1 0.2 1</diffuse>
+                    <specular>0 0 0 0</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <pose>0 0 0 -1.5708 0 0</pose>
+                <geometry>
+                    <mesh>
+                        <uri>model://v4/meshes/arwac_v4_wheel_scale.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+
+            <collision name="back_right_wheel_collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.2224185</radius>
+                        <length>0.170020</length>
+                    </cylinder>
+                </geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                        <mu>1</mu>
+                        <mu2>10</mu2>
+                        <slip1>0.01</slip1>
+                        <slip2>0.01</slip2>
+                        </ode>
+                    </friction>
+                </surface>
+            </collision>
+        </link>
+
+        <joint name="back_right_wheel_joint" type="revolute">
+            <parent>back_right_wheel_mount</parent>
+            <child>back_right_wheel</child>
+            <axis>
+                <xyz>0 1 0</xyz>
+                <use_parent_model_frame>1</use_parent_model_frame>
+            </axis>
+        </joint>
+
+        <plugin name="v4_drive_controller" filename="libv4_drive_controller.so">
+        </plugin>
+
+    </model>
+</sdf>
