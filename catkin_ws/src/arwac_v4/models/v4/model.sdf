@@ -4,6 +4,7 @@
         <pose>0 0 1 0 0 0</pose>
 
         <link name="base_link">
+            <pose>0 0 0 0 0 3.14159</pose>
             <inertial>
                 <inertia>
                     <ixx>1</ixx>
@@ -23,7 +24,7 @@
                     <specular>0 0 0 0</specular>
                     <emissive>0 0 0 1</emissive>
                 </material>
-                <pose>0.198 0.725 -0.5 0 0 3.14159</pose>
+                <pose>-0.19 -0.73 -0.52 0 0 0</pose>
                 <geometry>
                     <mesh>
                         <uri>model://v4/meshes/arwac_v4_no_mounts.stl</uri>
@@ -140,10 +141,9 @@
                 <surface>
                     <friction>
                         <ode>
-                        <mu>1</mu>
-                        <mu2>10</mu2>
-                        <slip1>0.01</slip1>
+                        <mu2>2</mu2>
                         <slip2>0.01</slip2>
+                        <slip1>0.01</slip1>
                         </ode>
                     </friction>
                 </surface>
@@ -186,10 +186,9 @@
                 <surface>
                     <friction>
                         <ode>
-                        <mu>1</mu>
-                        <mu2>10</mu2>
-                        <slip1>0.01</slip1>
+                        <mu2>2</mu2>
                         <slip2>0.01</slip2>
+                        <slip1>0.01</slip1>
                         </ode>
                     </friction>
                 </surface>
@@ -296,8 +295,8 @@
                 <xyz>0 0 1</xyz>
                 <use_parent_model_frame>1</use_parent_model_frame>
                 <limit>
-                    <lower>-1.65</lower>
-                    <upper>1.65</upper>
+                    <lower>-0.5</lower>
+                    <upper>0.5</upper>
                 </limit>
             </axis>
         </joint>
@@ -402,10 +401,9 @@
                 <surface>
                     <friction>
                         <ode>
-                        <mu>1</mu>
-                        <mu2>10</mu2>
-                        <slip1>0.01</slip1>
+                        <mu2>2</mu2>
                         <slip2>0.01</slip2>
+                        <slip1>0.01</slip1>
                         </ode>
                     </friction>
                 </surface>
@@ -448,10 +446,9 @@
                 <surface>
                     <friction>
                         <ode>
-                        <mu>1</mu>
-                        <mu2>10</mu2>
-                        <slip1>0.01</slip1>
+                        <mu2>2</mu2>
                         <slip2>0.01</slip2>
+                        <slip1>0.01</slip1>
                         </ode>
                     </friction>
                 </surface>

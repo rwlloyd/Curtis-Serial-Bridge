@@ -29,47 +29,45 @@ namespace gazebo
 			this->updateConnection = event::Events::ConnectWorldUpdateBegin(boost::bind(&MyPlugin::OnUpdate, this, _1));      //GAZEBO (not ROS) callback
 			this->twistSub = _n.subscribe("cmd_vel",  1, &MyPlugin::twistCallback,  (MyPlugin*)this);      
 			this->_pub_gnd  = _n.advertise<nav_msgs::Odometry>("odometry/groundTruth", 1000);   //TODO more acurate to sim the IMU and GPS ten fuse in EKF later on
+
+			this->fwdCmd = 0;
+			this->angleCmd = 0;
 			
 			this-> timeOut = 2;
 			this-> lastCmdTime = time(NULL);
-			this-> timedOut = false;
 
+			//These joint names don't make sense as the robot model is reversed
 			this->fR = this->model->GetJoint("front_right_wheel_joint");
 			this->fL = this->model->GetJoint("front_left_wheel_joint");
 			this->bR = this->model->GetJoint("back_right_wheel_joint");
 			this->bL = this->model->GetJoint("back_left_wheel_joint");
 			this->steering = this->model->GetJoint("back_right_wheel_steering_joint");
 
-			this->angleController = common::PID(2, 5, 1);
+			this->angleController = common::PID(50, 5, 10);
 			this->model->GetJointController()->SetPositionPID(steering->GetScopedName(), this->angleController);
 		}
 
 		public: void twistCallback(const geometry_msgs::Twist& msg){
-			this-> timedOut = false;
 			this->lastCmdTime = time(NULL);
-			
-			bL->SetVelocity(0, msg.linear.x/0.2224185); //divide by wheel radius
-			bR->SetVelocity(0, msg.linear.x/0.2224185);
-			fL->SetVelocity(0, msg.linear.x/0.2224185);
-			fR->SetVelocity(0, msg.linear.x/0.2224185);
-			this->model->GetJointController()->SetPositionTarget(steering->GetScopedName(), msg.angular.z);
-		}
 
-		public: void brake(){
-			bL->SetVelocity(0, 0);   
-			bR->SetVelocity(0, 0);  
-			fL->SetVelocity(0, 0);   
-			fR->SetVelocity(0, 0);  
+			// These are all *-1 because the robot model is backwards
+			this->fwdCmd = -msg.linear.x/0.2224185; //divide by wheel radius
+			this->angleCmd = -msg.angular.z;
 		}
 
 		public: void OnUpdate(const common::UpdateInfo & /*_info*/){
 			//cout << "update " << endl;
 
-			std::time_t timeNow = time(NULL);
-			if(timeNow >= this->lastCmdTime+this->timeOut && !this->timedOut){
-				this-> timedOut = true;
-				this->brake();
+			if(time(NULL)-this->lastCmdTime >= this->timeOut){
+				this->fwdCmd = 0;
+				this->angleCmd = 0;
 			}
+
+			bL->SetVelocity(0, this->fwdCmd); 
+			bR->SetVelocity(0, this->fwdCmd);
+			fL->SetVelocity(0, this->fwdCmd);
+			fR->SetVelocity(0, this->fwdCmd);
+			this->model->GetJointController()->SetPositionTarget(steering->GetScopedName(), this->angleCmd);
 
 			ignition::math::Pose3d pose = this->model->WorldPose();
  			ignition::math::Vector3<double> position = pose.Pos();
@@ -95,7 +93,8 @@ namespace gazebo
 		
 		private: std::time_t lastCmdTime;
 		private: std::time_t timeOut;
-		private: bool timedOut;
+		private: double fwdCmd;
+		private: double angleCmd;
 
 		public: common::PID angleController;
 
