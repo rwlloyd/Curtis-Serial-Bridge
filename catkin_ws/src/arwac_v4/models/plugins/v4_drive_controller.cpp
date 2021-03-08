@@ -1,4 +1,5 @@
 #include <stdio.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <string>
 #include <boost/bind.hpp>
@@ -41,17 +42,19 @@ namespace gazebo
 			this->fL = this->model->GetJoint("front_left_wheel_joint");
 			this->bR = this->model->GetJoint("back_right_wheel_joint");
 			this->bL = this->model->GetJoint("back_left_wheel_joint");
-			this->steering = this->model->GetJoint("back_right_wheel_steering_joint");
+			this->steeringA = this->model->GetJoint("front_left_wheel_steering_joint");
+			this->steeringB = this->model->GetJoint("front_left_wheel_steering_joint");
 
-			this->angleController = common::PID(50, 5, 10);
-			this->model->GetJointController()->SetPositionPID(steering->GetScopedName(), this->angleController);
+			this->angleController = common::PID(100, 67, 50);
+			this->model->GetJointController()->SetPositionPID(steeringA->GetScopedName(), this->angleController);
+			this->model->GetJointController()->SetPositionPID(steeringB->GetScopedName(), this->angleController);
 		}
 
 		public: void twistCallback(const geometry_msgs::Twist& msg){
 			this->lastCmdTime = time(NULL);
 
 			// These are all *-1 because the robot model is backwards
-			this->fwdCmd = -msg.linear.x/0.2224185; //divide by wheel radius
+			this->fwdCmd = -msg.linear.x;
 			this->angleCmd = -msg.angular.z;
 		}
 
@@ -63,15 +66,38 @@ namespace gazebo
 				this->angleCmd = 0;
 			}
 
-			bL->SetVelocity(0, this->fwdCmd); 
-			bR->SetVelocity(0, this->fwdCmd);
-			fL->SetVelocity(0, this->fwdCmd);
-			fR->SetVelocity(0, this->fwdCmd);
-			this->model->GetJointController()->SetPositionTarget(steering->GetScopedName(), this->angleCmd);
+			//differential wheel speeds calculated using the maths from this paper https://www.researchgate.net/publication/228464812_Electric_Vehicle_Stability_with_Rear_Electronic_Differential_Traction
+
+			double wheelbaseLength = 1.9;
+			double wheelbaseWidth = 1.414696;
+			double defaultWheelSpeed = this->fwdCmd/0.2224185;
+
+			if(angleCmd != 0){
+				double leftWheelSpeed = ((wheelbaseLength + (wheelbaseWidth/2*tan(-angleCmd)))/wheelbaseLength)*defaultWheelSpeed;
+				double rightWheelSpeed = ((wheelbaseLength - (wheelbaseWidth/2*tan(-angleCmd)))/wheelbaseLength)*defaultWheelSpeed;
+
+				fL->SetVelocity(0, leftWheelSpeed);
+				fR->SetVelocity(0, rightWheelSpeed);
+				bL->SetVelocity(0, leftWheelSpeed);
+				bR->SetVelocity(0, rightWheelSpeed);
+			}
+			else{
+				// if angleCmd == 0 then tan(angleCmd) = inf
+				fL->SetVelocity(0, defaultWheelSpeed);
+				fR->SetVelocity(0, defaultWheelSpeed);
+				bL->SetVelocity(0, defaultWheelSpeed);
+				bR->SetVelocity(0, defaultWheelSpeed);
+			}
+
+			this->model->GetJointController()->SetPositionTarget(steeringA->GetScopedName(), this->angleCmd);
+			this->model->GetJointController()->SetPositionTarget(steeringB->GetScopedName(), this->angleCmd);
 
 			ignition::math::Pose3d pose = this->model->WorldPose();
  			ignition::math::Vector3<double> position = pose.Pos();
-			auto orientation = pose.Rot();
+			ignition::math::Quaternion<double> orientation = pose.Rot();
+			ignition::math::Quaternion<double> rotateByPi = ignition::math::Quaternion<double>(0, 0, M_PI);
+			orientation = orientation * rotateByPi;
+			orientation.Normalize();
 			nav_msgs::Odometry odomOut;
 			odomOut.header.stamp = ros::Time::now(); 
 			odomOut.header.frame_id = "map";
@@ -102,7 +128,8 @@ namespace gazebo
 		private: physics::JointPtr fL;
 		private: physics::JointPtr bR;
 		private: physics::JointPtr bL;
-		private: physics::JointPtr steering;
+		private: physics::JointPtr steeringA;
+		private: physics::JointPtr steeringB;
 	};
 
 	GZ_REGISTER_MODEL_PLUGIN(MyPlugin)   //tell Gazebo I'm here
